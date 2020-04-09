@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
             // We are grounded, so recalculate
             // move direction directly from axes
 
-            moveDirection = new Vector3(Input.GetAxis("Horizontal") * -1, 0.0f, 1);
+            moveDirection = new Vector3(Input.GetAxis("Vertical") * -1, 0.0f, 1);
             moveDirection *= _speed;
 
             if (Input.GetButton("Jump"))
@@ -45,7 +45,9 @@ public class PlayerMovement : MonoBehaviour
         // as an acceleration (ms^-2)
         moveDirection.y -= Gravity * Time.deltaTime;
 
+        var move = transform.TransformDirection(moveDirection);
+
         // Move the controller
-        CharacterController.Move(moveDirection * Time.deltaTime);
+        CharacterController.Move(move * Time.deltaTime);
     }
 }
