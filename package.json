@@ -1,7 +1,14 @@
 {
   "name": "com.runner-scripts",
-  "version": "0.0.1-preview",
+  "version": "0.0.2-preview",
   "unity": "2019.2",
-  "dependencies": {    
-  }
+  "dependencies": {
+  },
+  "samples": [
+    {
+      "displayName": "Сцены с меню",
+      "description": "Пример меню",
+      "path": "Samples/UI sample"
+    }
+  ]
 }
