@@ -24,7 +24,7 @@ namespace Views
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
             {
                 _signalBus.Fire<HardwareBackPressSignal>();
-                Debug.Log("Fire");
+                Debug.Log("Fire HardwareBackPressSignal");
             }
         }
     }
