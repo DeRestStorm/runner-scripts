@@ -5,8 +5,10 @@ namespace Controllers.Behaviours
 {
     public class SlowEffect : MonoBehaviour, IEffect
     {
+        [Range(-5f, 1f)]
         public float Strength;
-        [SerializeField] private float _time;
+
+        [Range(.5f, 20f)] [SerializeField] private float _time;
 
         public float Time
         {

@@ -5,9 +5,8 @@ namespace Controllers.Behaviours
 {
     public class SlowTrigger : MonoBehaviour, IEffect
     {
-        public float Strength;
-        [SerializeField]
-        private float _time;
+        [Range(-5f, 1f)] public float Strength;
+        [SerializeField] [Range(.5f, 20f)] private float _time;
         public float Time {get => _time; set => _time = value; }
         [HideInInspector] public DateTime BeginTime { get; set; }
 
