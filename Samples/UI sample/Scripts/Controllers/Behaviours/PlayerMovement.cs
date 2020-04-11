@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private float _distance;
     private float _tempModifer = 1;
     private float _modiferInterpolator = 0.02f;
-    private float _speedInterpolator = 0.001f; 
+    private float _speedInterpolator = 0.001f;
 
     void Start()
     {
@@ -76,7 +76,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.DrawRay(rayOrigin, transform.TransformDirection(Vector3.forward) * hit.distance,
                 Color.yellow);
-            // Debug.Break();
 
             moveDirection.y = JumpSpeed;
             moveDirection.x += .5f * Time.deltaTime;
@@ -84,7 +83,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Debug.DrawRay(rayOrigin, transform.TransformDirection(Vector3.forward) * _distance, Color.white);
-            // Debug.Log("Did not Hit");
         }
 
 
