@@ -31,6 +31,7 @@ namespace Controllers.Behaviours
         {
             var playerMovement = go.GetComponent<PlayerMovement>();
             playerMovement.Modifer += Strength;
+            BeginTime = default(DateTime);
         }
     }
 }

@@ -24,6 +24,8 @@ namespace Controllers.Behaviours
         {
             var playerMovement = go.GetComponent<PlayerMovement>();
             playerMovement.Modifer += Strength;
+            
+            BeginTime = default(DateTime);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -37,7 +39,7 @@ namespace Controllers.Behaviours
             effects.Add(this);
         }
         
-        void OnDrawGizmosSelected()
+        void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
             Gizmos.matrix = transform.localToWorldMatrix;

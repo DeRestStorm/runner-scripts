@@ -18,7 +18,12 @@ namespace Views
         private void Start()
         {
             Button.onClick.AddListener(() => OnClick(Target));
-            OnClick += (x) => { x.Add(Effect.GetComponent<IEffect>()); };
+            OnClick += (x) =>
+            {
+                var effect = Effect.GetComponent<IEffect>();
+                if (effect.BeginTime == default(DateTime))
+                    x.Add(effect);
+            };
         }
     }
 }
