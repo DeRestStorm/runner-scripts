@@ -1,18 +1,21 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Controllers.Behaviours
 {
     public class RotationTrigger : MonoBehaviour
     {
+        [Inject] private PlayerMovement _playerMovement;
+
         private void OnTriggerEnter(Collider other)
         {
-            var rotation = other.transform.rotation;
-            rotation.y = transform.rotation.y;
-            other.transform.rotation = rotation;
+            // var rotation = other.transform.rotation;
+            // rotation.y = transform.rotation.y;
+            // other.transform.rotation = rotation;
         }
 
-        void OnDrawGizmosSelected()
+        void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
             Gizmos.matrix = transform.localToWorldMatrix;
@@ -24,6 +27,22 @@ namespace Controllers.Behaviours
             }
 
             DrawArrow.ForGizmo(Vector3.zero, Vector3.forward, Color.red, .5f);
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            var a = _playerMovement.transform.forward;
+            var b = transform.forward;
+            
+            if (Input.GetAxis("Vertical") < 0 && (a - b).x < 0)
+            {
+                var rotation = other.transform.rotation;
+                rotation.y = transform.rotation.y;
+                other.transform.rotation = rotation;
+            }
+            else if (Input.GetAxis("Vertical") > 0 && (a - b).x > 0)
+            {
+            }
         }
     }
 
