@@ -11,13 +11,14 @@ namespace Views
         public event Action<CharacterEffects> OnClick = delegate { };
         public CharacterEffects Target;
 
-        public IEffect Effect;
+        [SerializeField]
+        public Component Effect;
 
 
         private void Start()
         {
             Button.onClick.AddListener(() => OnClick(Target));
-            OnClick += (x) => { x.Add(Effect); };
+            OnClick += (x) => { x.Add(Effect.GetComponent<IEffect>()); };
         }
     }
 }
