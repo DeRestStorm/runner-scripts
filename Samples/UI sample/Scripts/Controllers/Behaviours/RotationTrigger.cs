@@ -10,9 +10,8 @@ namespace Controllers.Behaviours
 
         private void OnTriggerEnter(Collider other)
         {
-            // var rotation = other.transform.rotation;
-            // rotation.y = transform.rotation.y;
-            // other.transform.rotation = rotation;
+            
+            
         }
 
         void OnDrawGizmos()
@@ -31,18 +30,46 @@ namespace Controllers.Behaviours
 
         private void OnTriggerStay(Collider other)
         {
-            var a = _playerMovement.transform.forward;
-            var b = transform.forward;
-            
-            if (Input.GetAxis("Vertical") < 0 && (a - b).x < 0)
+            if (other.gameObject == _playerMovement.gameObject)
             {
-                var rotation = other.transform.rotation;
-                rotation.y = transform.rotation.y;
-                other.transform.rotation = rotation;
+                var a = _playerMovement.transform.forward;
+                var b = transform.forward;
+
+                if (Input.GetAxis("Vertical") < 0 && (a - b).x < 0)
+                {
+                    var rotation = other.transform.rotation;
+                    rotation.y = transform.rotation.y;
+                    other.transform.rotation = rotation;
+                }
+                else if (Input.GetAxis("Vertical") > 0 && (a - b).x > 0)
+                {
+                    var rotation = other.transform.rotation;
+                    rotation.y = transform.rotation.y;
+                    other.transform.rotation = rotation;
+                }
+                return;
             }
-            else if (Input.GetAxis("Vertical") > 0 && (a - b).x > 0)
+
+            var aiMovement = other.GetComponent<AIMovement>();
+            if (aiMovement != null)
             {
+                var aiForward = aiMovement.transform.forward;
+                var aiForward2d = new Vector2(aiForward.x, aiForward.z);
+
+                var targetDir = transform.position - aiMovement.transform.position;
+                var angle = Vector3.Angle (targetDir, aiMovement.transform.forward);
+                Debug.Log(angle);
+                
+                if (Mathf.Abs(angle) >= 90f)
+                {
+                    var rotation = other.transform.rotation;
+                    rotation.y = transform.rotation.y;
+                    other.transform.rotation = rotation;
+                }
+                
+
             }
+
         }
     }
 

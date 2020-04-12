@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class AIMovement : MonoBehaviour
 {
     // Start is called before the first frame update
     public CharacterController CharacterController;
@@ -19,12 +19,15 @@ public class PlayerMovement : MonoBehaviour
     private float _acceleration;
     private Vector3 moveDirection = Vector3.zero;
     public float Modifer = 1;
+    public LayerMask IgnoreLayer;
+    private float _distance;
     private float _tempModifer = 1;
     private float _modiferInterpolator = 0.02f;
     private float _speedInterpolator = 0.001f;
 
     void Start()
     {
+        _distance = CharacterController.radius + 0.1F + CharacterController.skinWidth;
         _speed = StartSpeed;
     }
 
@@ -41,20 +44,36 @@ public class PlayerMovement : MonoBehaviour
             // We are grounded, so recalculate
             // move direction directly from axes
 
-            moveDirection = new Vector3(Input.GetAxis("Vertical") * -1, 0.0f, 1 * _tempModifer);
+            moveDirection = new Vector3(0, 0.0f, 1 * _tempModifer);
             moveDirection *= _speed;
-
-            if (Input.GetButton("Jump"))
-            {
-                moveDirection.y = JumpSpeed;
-            }
         }
         else
         {
             moveDirection.x = 0;
             moveDirection.z = _tempModifer * _speed;
         }
-       
+
+        RaycastHit hit;
+        // Does the ray intersect any objects excluding the player layer
+
+        var rayOrigin = transform.position;
+        rayOrigin.y -= .2f;
+
+
+        if (Physics.Raycast(rayOrigin, transform.TransformDirection(Vector3.forward), out hit, _distance,
+            IgnoreLayer))
+        {
+            Debug.DrawRay(rayOrigin, transform.TransformDirection(Vector3.forward) * hit.distance,
+                Color.yellow);
+
+            moveDirection.y = JumpSpeed;
+            moveDirection.x += .5f * Time.deltaTime;
+        }
+        else
+        {
+            Debug.DrawRay(rayOrigin, transform.TransformDirection(Vector3.forward) * _distance, Color.white);
+        }
+
 
         // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
         // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
