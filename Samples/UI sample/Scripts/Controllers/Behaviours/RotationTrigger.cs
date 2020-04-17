@@ -8,12 +8,6 @@ namespace Controllers.Behaviours
     {
         [Inject] private PlayerMovement _playerMovement;
 
-        private void OnTriggerEnter(Collider other)
-        {
-            
-            
-        }
-
         void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;

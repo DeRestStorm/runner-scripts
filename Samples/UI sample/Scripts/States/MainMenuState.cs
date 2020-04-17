@@ -1,3 +1,4 @@
+using Commands;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Views;
@@ -7,6 +8,7 @@ namespace States
 {
     public class MainMenuState : IState
     {
+        [Inject] private StartRunnerSceneCommand _startRunnerSceneCommand;
         [Inject] private MainMenuView _mainMenuView;
 
         public void Load()
@@ -23,7 +25,7 @@ namespace States
 
         private void OnStartClicked()
         {
-            SceneManager.LoadScene(1);
+            _startRunnerSceneCommand.Exequte();
         }
     }
 }

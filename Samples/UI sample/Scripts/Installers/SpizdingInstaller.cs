@@ -5,14 +5,12 @@ using Scripts.Models;
 using Scripts.Repositories;
 using Signals;
 using States;
-using Views;
 using Zenject;
 
-namespace Installers
+namespace Scripts.Installers
 {
-    public class GameInstaller : MonoInstaller
-    {
-        public override void InstallBindings()
+    public class SpizdingInstaller: MonoInstaller
+    { public override void InstallBindings()
         {
             SignalBusInstaller.Install(Container);
             Container.DeclareSignal<HardwareBackPressSignal>();
@@ -28,8 +26,7 @@ namespace Installers
 
             Container.BindSignal<HardwareBackPressSignal>()
                 .ToMethod<LoadStateCommand<MenuState>>(x => x.Execute).FromResolve();
-
-            Container.BindInterfacesTo<MainView>().AsSingle();
         }
+        
     }
 }

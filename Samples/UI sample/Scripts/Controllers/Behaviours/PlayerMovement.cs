@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private float _tempModifer = 1;
     private float _modiferInterpolator = 0.02f;
     private float _speedInterpolator = 0.001f;
+    public float VerticalSpeed = 1;
 
     void Start()
     {
@@ -34,14 +35,12 @@ public class PlayerMovement : MonoBehaviour
         _tempModifer = Modifer;
         // _tempModifer= Mathf.Lerp(1, Modifer, _modiferInterpolator);
 
-        // Debug.Log(_tempModifer);
-
         if (CharacterController.isGrounded)
         {
             // We are grounded, so recalculate
             // move direction directly from axes
 
-            moveDirection = new Vector3(Input.GetAxis("Vertical") * -1, 0.0f, 1 * _tempModifer);
+            moveDirection = new Vector3(Input.GetAxis("Vertical") * -VerticalSpeed, 0.0f, 1 * _tempModifer);
             moveDirection *= _speed;
 
             if (Input.GetButton("Jump"))
