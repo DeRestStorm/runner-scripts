@@ -1,6 +1,7 @@
 Temp/
 Library/
 
+Resources/
 *.asmdef
 
 Assets/Plugins/Editor/

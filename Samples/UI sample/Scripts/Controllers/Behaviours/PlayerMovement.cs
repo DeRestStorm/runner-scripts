@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -23,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     private float _modiferInterpolator = 0.02f;
     private float _speedInterpolator = 0.001f;
     public float VerticalSpeed = 1;
+
+    [Inject(Id = "CharacterAnimator")] private Animator _animatorController;
 
     void Start()
     {
@@ -53,7 +57,8 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.x = 0;
             moveDirection.z = _tempModifer * _speed;
         }
-       
+
+        _animatorController.SetFloat("speed", moveDirection.normalized.magnitude);
 
         // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
         // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
