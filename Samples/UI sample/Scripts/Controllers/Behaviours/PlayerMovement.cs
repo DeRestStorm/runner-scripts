@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     public CharacterController CharacterController;
     public float StartSpeed;
+    [Range(0,1)]
+    public float HorisontalSpeedModifer = 1;
     public float MaxSpeed;
     public float BaseAcceleration;
     public float JumpSpeed;
@@ -61,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
             // We are grounded, so recalculate
             // move direction directly from axes
 
-            moveDirection = new Vector3(Input.GetAxis("Vertical") * -VerticalSpeed, 0.0f, 1 * _tempModifer);
+            moveDirection = new Vector3((Input.GetAxis("Vertical") * -VerticalSpeed  * HorisontalSpeedModifer), 0.0f, 1 * _tempModifer);
             moveDirection *= _speed;
 
             if (Input.GetButton("Jump"))
@@ -71,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            moveDirection.x = (Input.GetAxis("Vertical") * -VerticalSpeed )  * _speed;
+            moveDirection.x = (Input.GetAxis("Vertical") * -VerticalSpeed )  * HorisontalSpeedModifer * _speed; 
             moveDirection.z = _tempModifer * _speed;
         }
 
