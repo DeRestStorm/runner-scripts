@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         // RaycastHit rh;
         // _isGrounded = Physics.Raycast(groundRay, out rh, 0.5f);
 
-        _animatorController.SetBool("ifGround", isGrounded);
+        _animatorController.SetBool("ifGround", !isGrounded);
         // if (Modifer != 1)
         _tempModifer = Modifer;
         // _tempModifer= Mathf.Lerp(1, Modifer, _modiferInterpolator);
