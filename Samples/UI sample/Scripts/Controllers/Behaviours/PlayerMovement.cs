@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            moveDirection.x = Input.GetAxis("Vertical") * -VerticalSpeed;
+            moveDirection.x = (Input.GetAxis("Vertical") * -VerticalSpeed )  * _speed;
             moveDirection.z = _tempModifer * _speed;
         }
 
