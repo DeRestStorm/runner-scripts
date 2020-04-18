@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _baseCenter;
     private float _slideHeight;
     private Vector3 _slideCenter;
+    // private bool _isGrounded;
 
     [Inject(Id = "CharacterAnimator")] private Animator _animatorController;
 
@@ -40,16 +41,22 @@ public class PlayerMovement : MonoBehaviour
         _baseCenter = CharacterController.center;
         _baseHeight = CharacterController.height;
         _slideHeight = _baseHeight / 3;
-        _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight/2), _baseCenter.z);
+        _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight / 2), _baseCenter.z);
     }
 
     void Update()
     {
+        var isGrounded = CharacterController.isGrounded;
+        // var groundRay = new Ray(transform.position, Vector3.down);
+        // RaycastHit rh;
+        // _isGrounded = Physics.Raycast(groundRay, out rh, 0.5f);
+
+        _animatorController.SetBool("ifGround", isGrounded);
         // if (Modifer != 1)
         _tempModifer = Modifer;
         // _tempModifer= Mathf.Lerp(1, Modifer, _modiferInterpolator);
 
-        if (CharacterController.isGrounded)
+        if (isGrounded)
         {
             // We are grounded, so recalculate
             // move direction directly from axes
@@ -73,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         var slide = Input.GetKey(KeyCode.C);
 
         _animatorController.SetBool("Slide", slide);
-        
+
         if (slide)
         {
             CharacterController.height = _slideHeight;
