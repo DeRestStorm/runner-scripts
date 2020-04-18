@@ -7,8 +7,8 @@
   },
   "samples": [
     {
-      "displayName": "Сцены с меню",
-      "description": "Пример меню",
+      "displayName": "Runner",
+      "description": "description",
       "path": "Samples/UI sample"
     }
   ]
