@@ -25,12 +25,22 @@ public class PlayerMovement : MonoBehaviour
     private float _modiferInterpolator = 0.02f;
     private float _speedInterpolator = 0.001f;
     public float VerticalSpeed = 1;
+    public CapsuleCollider _collider;
+    private float _baseHeight;
+    private Vector3 _baseCenter;
+    private float _slideHeight;
+    private Vector3 _slideCenter;
 
     [Inject(Id = "CharacterAnimator")] private Animator _animatorController;
 
     void Start()
     {
         _speed = StartSpeed;
+        _collider = GetComponent<CapsuleCollider>();
+        _baseCenter = CharacterController.center;
+        _baseHeight = CharacterController.height;
+        _slideHeight = _baseHeight / 3;
+        _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight/2), _baseCenter.z);
     }
 
     void Update()
@@ -54,11 +64,28 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Debug.Log("Взлетел");
             moveDirection.x = Input.GetAxis("Vertical") * -VerticalSpeed;
             moveDirection.z = _tempModifer * _speed;
         }
 
+        Debug.Log(Input.GetKey(KeyCode.C));
+
+        var slide = Input.GetKey(KeyCode.C);
+
+        _animatorController.SetBool("Slide", slide);
+        
+        if (slide)
+        {
+            CharacterController.height = _slideHeight;
+            CharacterController.center = _slideCenter;
+        }
+        else
+        {
+            CharacterController.height = _baseHeight;
+            CharacterController.center = _baseCenter;
+        }
+
+        // _animatorController.SetBool("Slide", Input.GetKey(KeyCode.C));
         _animatorController.SetBool("Slide", Input.GetKey(KeyCode.C));
 
         _animatorController.SetFloat("speed", moveDirection.normalized.magnitude);
