@@ -54,9 +54,12 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            moveDirection.x = 0;
+            Debug.Log("Взлетел");
+            moveDirection.x = Input.GetAxis("Vertical") * -VerticalSpeed;
             moveDirection.z = _tempModifer * _speed;
         }
+
+        _animatorController.SetBool("Slide", Input.GetKey(KeyCode.C));
 
         _animatorController.SetFloat("speed", moveDirection.normalized.magnitude);
 
