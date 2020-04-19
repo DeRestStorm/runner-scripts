@@ -74,8 +74,6 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.z = _tempModifer * _speed;
         }
 
-        Debug.Log(Input.GetKey(KeyCode.C));
-
         var slide = Input.GetKey(KeyCode.C);
 
         _animatorController.SetBool("Slide", slide);
