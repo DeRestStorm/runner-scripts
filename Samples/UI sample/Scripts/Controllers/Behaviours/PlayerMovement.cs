@@ -8,8 +8,10 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     public CharacterController CharacterController;
     public float StartSpeed;
-    [Range(0,1)]
+    [Range(0,2)]
     public float HorisontalSpeedModifer = 1;
+    [Range(0,2)]
+    public float HorisontalSpeedInJumpModifer = 1;
     public float MaxSpeed;
     public float BaseAcceleration;
     public float JumpSpeed;
@@ -68,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            moveDirection.x = (Input.GetAxis("Vertical") * -VerticalSpeed )  * HorisontalSpeedModifer * _speed; 
+            moveDirection.x = (Input.GetAxis("Vertical") * -VerticalSpeed )  * HorisontalSpeedInJumpModifer * _speed; 
             moveDirection.z = _tempModifer * _speed;
         }
 

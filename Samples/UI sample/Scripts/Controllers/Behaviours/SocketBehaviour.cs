@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Scripts.Controllers.Behaviours
 {
     public class SocketBehaviour : MonoBehaviour
     {
         public List<ObjectSocket> Sockets;
+        public UnityEvent Action;
 
         public bool Connect(Rigidbody rb)
         {
@@ -21,6 +23,14 @@ namespace Scripts.Controllers.Behaviours
                 rb.MovePosition(socket.Transform.position);
                 rb.MoveRotation(socket.Transform.rotation);
 
+                foreach (var obj in Sockets)
+                {
+                    var find = obj.Transform.Find(obj.ObjectName);
+                    if (find == null)
+                       return true;
+                } 
+                
+                Action?.Invoke();
                 return true;
             }
 

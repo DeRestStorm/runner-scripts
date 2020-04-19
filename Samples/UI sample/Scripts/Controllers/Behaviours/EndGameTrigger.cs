@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Controllers.Behaviours
 {
-    public class DeathTrigger : MonoBehaviour
+    public class EndGameTrigger : MonoBehaviour
     {
         [Inject] private PlayerMovement _playerMovement;
         [Inject] private ZenjectSceneLoader _sceneLoader;
