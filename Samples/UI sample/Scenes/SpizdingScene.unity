@@ -1068,6 +1068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2589db423ac64652adbff82dcf15cec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Time: 6
 --- !u!114 &893355879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1642,6 +1643,9 @@ MonoBehaviour:
     ObjectName: BlueCard
   - Transform: {fileID: 106745730}
     ObjectName: RedCard
+  Action:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1371995825
 GameObject:
   m_ObjectHideFlags: 0

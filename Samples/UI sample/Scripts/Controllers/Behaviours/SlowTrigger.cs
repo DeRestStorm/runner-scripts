@@ -12,12 +12,8 @@ namespace Controllers.Behaviours
 
         public void Begin(GameObject go)
         {
-            
-            Debug.Log("Begin");
             var playerMovement = go.GetComponent<PlayerMovement>();
             playerMovement.Modifer -= Strength;
-            
-            Debug.Log(playerMovement.Modifer);
         }
 
         public void End(GameObject go)
@@ -30,8 +26,6 @@ namespace Controllers.Behaviours
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("Add");
-            
             var effects = other.GetComponent<CharacterEffects>();
             if (effects == null)
                 return;

@@ -14,14 +14,6 @@ namespace Installers
     {
         public override void InstallBindings()
         {
-            SignalBusInstaller.Install(Container);
-            Container.DeclareSignal<HardwareBackPressSignal>();
-            Container.DeclareSignal<StartSceneSignal>();
-            Container.DeclareSignal<AddItemsSignal>();
-            Container.DeclareSignal<ChangeScrapSignal>();
-
-            Container.Bind<IStateMachine>().To<StateMachine>().AsSingle();
-            Container.Bind<PauseController>().AsSingle().NonLazy();
             Container.Bind<MenuState>().AsSingle().NonLazy();
             Container.Bind<LoadStateCommand<MenuState>>().AsSingle();
             Container.Bind<IItemRepository<Item>>().To<ItemRepository>().AsSingle();

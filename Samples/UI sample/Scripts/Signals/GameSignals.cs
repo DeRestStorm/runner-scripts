@@ -2,13 +2,19 @@ using Scripts.Models;
 
 namespace Signals
 {
-    public class ChangeScrapSignal
-    {
-        public float Cost;
-    }
-    
     public class AddItemsSignal
     {
         public Item item;
+    }
+    
+    public class GamePausedSignal
+    {
+    }
+    public class GameUnPausedSignal
+    {
+    }
+    public class TheftTimerSignal
+    {
+        public float Time;
     }
 }
