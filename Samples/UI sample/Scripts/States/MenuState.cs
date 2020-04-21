@@ -1,3 +1,4 @@
+using Commands;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Views;
@@ -9,6 +10,8 @@ namespace States
     {
         [Inject] private PauseView _pauseView;
         [Inject] private SignalBus _signalBus;
+        
+        [Inject] private StartRunnerSceneCommand _startRunnerSceneCommand;
 
         public override void Load()
         {
@@ -38,6 +41,7 @@ namespace States
             SceneManager.LoadScene(0);
         }    private void OnResumeClicked()
         {
+            _startRunnerSceneCommand.Exequte();
             Unload();
             // _signalBus.
         }
