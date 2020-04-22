@@ -918,7 +918,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9aa739a2addc51458a8798a7172ec8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterController: {fileID: 452183533}
   StartSpeed: 8
   HorisontalSpeedModifer: 0
   HorisontalSpeedInJumpModifer: 1
@@ -928,8 +927,7 @@ MonoBehaviour:
   Gravity: 20
   Modifer: 1
   VerticalSpeed: 1
-  _collider: {fileID: 0}
-  RotarionSpeed: 1
+  RotarionSpeed: 6.98
 --- !u!143 &452183533
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2784,7 +2782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8b2595092e847d9b1f93ee43d498615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterController: {fileID: 1783399549}
   StartSpeed: 0
   MaxSpeed: 8
   BaseAcceleration: 8
