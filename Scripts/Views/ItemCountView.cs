@@ -11,25 +11,25 @@ namespace Scripts.Views
 {
     public class ItemCountView : MonoBehaviour
     {
-        public Text Label;
+        private Text _label;
         [Inject] private SignalBus _signalBus;
         public ItemType Type;
         [Inject] private IItemRepository<Item> _itemRepository;
 
-        private void Start ()
+        private void Start()
         {
+            _label = GetComponentInChildren<Text>();
             _signalBus.Subscribe<AddItemsSignal>(OnAddItems);
-            Label.text = _itemRepository.Get(Type)?.Count.ToString(CultureInfo.InvariantCulture);
+            _label.text = _itemRepository.Get(Type)?.Count.ToString(CultureInfo.InvariantCulture);
         }
 
         private void OnAddItems(AddItemsSignal signal)
         {
             Debug.Log(signal.item.Type);
-            if(signal.item.Type != Type)
+            if (signal.item.Type != Type)
                 return;
 
-            Label.text = signal.item.Count.ToString(CultureInfo.InvariantCulture);
+            _label.text = signal.item.Count.ToString(CultureInfo.InvariantCulture);
         }
-        
     }
 }

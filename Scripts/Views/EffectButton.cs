@@ -7,20 +7,18 @@ namespace Views
 {
     public class EffectButton : MonoBehaviour
     {
-        public Button Button;
+        private Button _button;
         public event Action<CharacterEffects> OnClick = delegate { };
         public CharacterEffects Target;
 
-        [SerializeField]
-        public Component Effect;
-
-
         private void Start()
         {
-            Button.onClick.AddListener(() => OnClick(Target));
+            _button = GetComponent<Button>();
+            var effect = GetComponent<IEffect>();
+
+            _button.onClick.AddListener(() => OnClick(Target));
             OnClick += (x) =>
             {
-                var effect = Effect.GetComponent<IEffect>();
                 if (effect.BeginTime == default(DateTime))
                     x.Add(effect);
             };
