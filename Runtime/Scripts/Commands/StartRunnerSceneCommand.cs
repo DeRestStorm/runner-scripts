@@ -3,7 +3,7 @@ using Scripts.Models;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace Commands
+namespace Runtime.Scripts.Commands
 {
     public class StartRunnerSceneCommand
     {

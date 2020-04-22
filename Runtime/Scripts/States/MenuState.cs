@@ -1,10 +1,12 @@
 using Commands;
+using Runtime.Scripts.Commands;
+using States;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Views;
 using Zenject;
 
-namespace States
+namespace Runtime.Scripts.States
 {
     public class MenuState : BaseState
     {
