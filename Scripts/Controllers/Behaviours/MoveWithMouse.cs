@@ -13,6 +13,7 @@ namespace Controllers.Behaviours
         public Rigidbody Rigidbody;
         public LayerMask Mask;
         private Bounds _bounds;
+        private Transform _socket;
 
         private void FixedUpdate()
         {
@@ -26,14 +27,14 @@ namespace Controllers.Behaviours
                     var socket = hit.transform.GetComponent<SocketBehaviour>();
                     if (socket != null)
                     {
-                        _isConnected = socket.Connect(Rigidbody);
-                        if (_isConnected)
+                        _socket = socket.Connect(Rigidbody);
+                        if (_socket != null)
                         {
                             return;
                         }
                     }
 
-                    _isConnected = false;
+                    _socket = null;
 
                     var point = hit.point;
                     point += (_bounds.max.y * transform.localScale.y + .1f) * hit.normal;
@@ -67,11 +68,14 @@ namespace Controllers.Behaviours
 
         private void OnMouseUp()
         {
-            if (_isConnected)
+            if (_socket != null)
             {
                 Rigidbody.drag = 0;
                 gameObject.layer = 0;
                 _isPressed = false;
+                transform.SetParent(_socket);
+                _socket.GetComponentInParent<SocketBehaviour>().ActionMethod();
+                _socket = null;
                 return;
             }
 

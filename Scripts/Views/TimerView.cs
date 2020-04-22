@@ -1,5 +1,3 @@
-using System;
-using System.Globalization;
 using Signals;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,17 +7,18 @@ namespace Scripts.Views
 {
     public class TimerView : MonoBehaviour
     {
-        public Text Label;
+        private Text _label;
         [Inject] private SignalBus _signalBus;
 
         private void Start()
         {
+            _label = GetComponent<Text>();
             _signalBus.Subscribe<TheftTimerSignal>(OnTimerUpdate);
         }
 
         private void OnTimerUpdate(TheftTimerSignal signal)
         {
-            Label.text = signal.Time.ToString("N1");
+            _label.text = signal.Time.ToString("N1");
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Scripts.Controllers.Behaviours
         public List<ObjectSocket> Sockets;
         public UnityEvent Action;
 
-        public bool Connect(Rigidbody rb)
+        public Transform Connect(Rigidbody rb)
         {
             var sockets = Sockets.Where(x => x.ObjectName == rb.name);
             foreach (var socket in sockets)
@@ -23,20 +23,21 @@ namespace Scripts.Controllers.Behaviours
                 rb.MovePosition(socket.Transform.position);
                 rb.MoveRotation(socket.Transform.rotation);
 
-                foreach (var obj in Sockets)
-                {
-                    var find = obj.Transform.Find(obj.ObjectName);
-                    if (find == null)
-                       return true;
-                } 
-                
-                Action?.Invoke();
-                return true;
+                return socket.Transform;
             }
-            
-            
 
-            return false;
+            return null;
+        }
+
+        public void ActionMethod()
+        {
+            foreach (var socket in Sockets)
+            {
+                if (socket.Transform.GetComponentsInChildren<MonoBehaviour>().Length == 0)
+                    return;
+            }
+
+            Action?.Invoke();
         }
 
         [System.Serializable]

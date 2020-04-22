@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class AIMovement : MonoBehaviour
 {
     // Start is called before the first frame update
-    public CharacterController CharacterController;
+    private CharacterController _characterController;
     public float StartSpeed;
     public float MaxSpeed;
     public float BaseAcceleration;
@@ -27,19 +22,16 @@ public class AIMovement : MonoBehaviour
 
     void Start()
     {
-        _distance = CharacterController.radius + 0.1F + CharacterController.skinWidth;
+        _characterController = GetComponent<CharacterController>();
+        _distance = _characterController.radius + 0.1F + _characterController.skinWidth;
         _speed = StartSpeed;
     }
 
     void Update()
     {
-        // if (Modifer != 1)
         _tempModifer = Modifer;
-        // _tempModifer= Mathf.Lerp(1, Modifer, _modiferInterpolator);
 
-        // Debug.Log(_tempModifer);
-
-        if (CharacterController.isGrounded)
+        if (_characterController.isGrounded)
         {
             // We are grounded, so recalculate
             // move direction directly from axes
@@ -83,23 +75,6 @@ public class AIMovement : MonoBehaviour
         var move = transform.TransformDirection(moveDirection);
 
         // Move the controller
-        CharacterController.Move(move * Time.deltaTime);
+        _characterController.Move(move * Time.deltaTime);
     }
-
-    // void OnCollisionEnter(Collision collision)
-    // {
-    //     foreach (ContactPoint contact in collision.contacts)
-    //     {
-    //         Debug.DrawRay(contact.point, contact.normal, Color.white);
-    //     }
-    //
-    //     Debug.Log(collision.gameObject.name);
-    //
-    //     if (collision.gameObject.name == "Cube")
-    //     {
-    //         Debug.Log("Чпоньк");
-    //
-    //         GetComponent<Rigidbody>().AddForce(Vector3.up * 3, ForceMode.Impulse);
-    //     }
-    // }
 }

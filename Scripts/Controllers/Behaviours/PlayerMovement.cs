@@ -1,17 +1,14 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
     // Start is called before the first frame update
-    public CharacterController CharacterController;
+    private CharacterController _characterController;
     public float StartSpeed;
-    [Range(0,2)]
-    public float HorisontalSpeedModifer = 1;
-    [Range(0,2)]
-    public float HorisontalSpeedInJumpModifer = 1;
+    [Range(0, 2)] public float HorisontalSpeedModifer = 1;
+    [Range(0, 2)] public float HorisontalSpeedInJumpModifer = 1;
     public float MaxSpeed;
     public float BaseAcceleration;
     public float JumpSpeed;
@@ -24,43 +21,39 @@ public class PlayerMovement : MonoBehaviour
     private float _modiferInterpolator = 0.02f;
     private float _speedInterpolator = 0.001f;
     public float VerticalSpeed = 1;
-    public CapsuleCollider _collider;
     private float _baseHeight;
     private Vector3 _baseCenter;
     private float _slideHeight;
+
     private Vector3 _slideCenter;
     // private bool _isGrounded;
 
     [Inject(Id = "CharacterAnimator")] private Animator _animatorController;
+    [Range(1, 15)] public float RotarionSpeed = 1;
 
     void Start()
     {
+        _characterController = GetComponent<CharacterController>();
         _speed = StartSpeed;
-        _collider = GetComponent<CapsuleCollider>();
-        _baseCenter = CharacterController.center;
-        _baseHeight = CharacterController.height;
+        _baseCenter = _characterController.center;
+        _baseHeight = _characterController.height;
         _slideHeight = _baseHeight / 3;
         _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight / 2), _baseCenter.z);
     }
 
     void Update()
     {
-        var isGrounded = CharacterController.isGrounded;
-        // var groundRay = new Ray(transform.position, Vector3.down);
-        // RaycastHit rh;
-        // _isGrounded = Physics.Raycast(groundRay, out rh, 0.5f);
-
+        var isGrounded = _characterController.isGrounded;
         _animatorController.SetBool("ifGround", !isGrounded);
-        // if (Modifer != 1)
         _tempModifer = Modifer;
-        // _tempModifer= Mathf.Lerp(1, Modifer, _modiferInterpolator);
 
         if (isGrounded)
         {
             // We are grounded, so recalculate
             // move direction directly from axes
 
-            moveDirection = new Vector3((Input.GetAxis("Vertical") * -VerticalSpeed  * HorisontalSpeedModifer), 0.0f, 1 * _tempModifer);
+            moveDirection = new Vector3((Input.GetAxis("Vertical") * -VerticalSpeed * HorisontalSpeedModifer), 0.0f,
+                1 * _tempModifer);
             moveDirection *= _speed;
 
             if (Input.GetButton("Jump"))
@@ -70,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            moveDirection.x = (Input.GetAxis("Vertical") * -VerticalSpeed )  * HorisontalSpeedInJumpModifer * _speed; 
+            moveDirection.x = (Input.GetAxis("Vertical") * -VerticalSpeed) * HorisontalSpeedInJumpModifer * _speed;
             moveDirection.z = _tempModifer * _speed;
         }
 
@@ -80,16 +73,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (slide)
         {
-            CharacterController.height = _slideHeight;
-            CharacterController.center = _slideCenter;
+            _characterController.height = _slideHeight;
+            _characterController.center = _slideCenter;
         }
         else
         {
-            CharacterController.height = _baseHeight;
-            CharacterController.center = _baseCenter;
+            _characterController.height = _baseHeight;
+            _characterController.center = _baseCenter;
         }
 
-        // _animatorController.SetBool("Slide", Input.GetKey(KeyCode.C));
         _animatorController.SetBool("Slide", Input.GetKey(KeyCode.C));
 
         _animatorController.SetFloat("speed", moveDirection.normalized.magnitude);
@@ -102,23 +94,6 @@ public class PlayerMovement : MonoBehaviour
         var move = transform.TransformDirection(moveDirection);
 
         // Move the controller
-        CharacterController.Move(move * Time.deltaTime);
+        _characterController.Move(move * Time.deltaTime);
     }
-
-    // void OnCollisionEnter(Collision collision)
-    // {
-    //     foreach (ContactPoint contact in collision.contacts)
-    //     {
-    //         Debug.DrawRay(contact.point, contact.normal, Color.white);
-    //     }
-    //
-    //     Debug.Log(collision.gameObject.name);
-    //
-    //     if (collision.gameObject.name == "Cube")
-    //     {
-    //         Debug.Log("Чпоньк");
-    //
-    //         GetComponent<Rigidbody>().AddForce(Vector3.up * 3, ForceMode.Impulse);
-    //     }
-    // }
 }
