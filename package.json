@@ -1,6 +1,6 @@
 {
   "name": "com.reststorm.runner-scripts",
-  "displayName": "runner-scripts",
+  "displayName": "runner",
   "version": "0.0.3-preview",
   "unity": "2019.3",
   "description": "for runner project."
