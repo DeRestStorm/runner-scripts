@@ -1,11 +1,11 @@
 using Commands;
+using Controllers;
 using Runtime.Scripts.Commands;
 using Runtime.Scripts.States;
 using Scripts.Interfaces;
 using Scripts.Models;
 using Scripts.Repositories;
 using Signals;
-using States;
 using Views;
 using Zenject;
 
@@ -24,6 +24,9 @@ namespace Installers
                 .ToMethod<LoadStateCommand<MenuState>>(x => x.Execute).FromResolve();
 
             Container.BindInterfacesTo<MainView>().AsSingle();
+
+            var pauseController = Container.Resolve<PauseController>();
+            pauseController.UnPause();
         }
     }
 }
