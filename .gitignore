@@ -4,7 +4,6 @@ Library/
 Resources.meta
 
 Resources/
-*.asmdef
 
 Assets/Plugins/Editor/
 Data/configCollections/
