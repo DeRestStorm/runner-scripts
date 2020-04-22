@@ -1,15 +1,6 @@
 {
-  "name": "com.runner-scripts",
+  "name": "runner-scripts",
   "version": "0.0.3-preview",
   "unity": "2019.3",
-  "unityRelease": "1f1",
-  "dependencies": {
-  },
-  "samples": [
-    {
-      "displayName": "Runner",
-      "description": "description",
-      "path": "Samples/UI sample"
-    }
-  ]
+  "unityRelease": "1f1"
 }
