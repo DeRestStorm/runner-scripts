@@ -26,7 +26,7 @@ namespace Installers
             Container.BindInterfacesTo<MainView>().AsSingle();
 
             var pauseController = Container.Resolve<PauseController>();
-            pauseController.UnPause();
+            pauseController.Reset();
         }
     }
 }

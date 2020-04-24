@@ -520,9 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 078137c1315647d996064d30ae555511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Button: {fileID: 211803689}
   Target: {fileID: 452183538}
-  Effect: {fileID: 211803687}
 --- !u!114 &211803689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -922,7 +920,7 @@ MonoBehaviour:
   HorisontalSpeedModifer: 0
   HorisontalSpeedInJumpModifer: 1
   MaxSpeed: 15.96
-  BaseAcceleration: 0.01
+  BaseAcceleration: 0.03
   JumpSpeed: 8
   Gravity: 20
   Modifer: 1

@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpSpeed;
     public float Gravity = 20.0f;
     private float _speed;
+    private float _additionalSpeed;
     private float _acceleration;
     private Vector3 moveDirection = Vector3.zero;
     public float Modifer = 1;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private float _baseHeight;
     private Vector3 _baseCenter;
     private float _slideHeight;
+    private Vector3 _oldPosition;
 
     private Vector3 _slideCenter;
     // private bool _isGrounded;
@@ -39,10 +41,22 @@ public class PlayerMovement : MonoBehaviour
         _baseHeight = _characterController.height;
         _slideHeight = _baseHeight / 3;
         _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight / 2), _baseCenter.z);
+        _oldPosition = transform.position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        _speed = StartSpeed + _additionalSpeed;
+        if (_speed > MaxSpeed)
+        {
+            _speed = MaxSpeed;
+        }
+
+        if (_speed < 3)
+        {
+            _speed = 3;
+        }
+
         var isGrounded = _characterController.isGrounded;
         _animatorController.SetBool("ifGround", !isGrounded);
         _tempModifer = Modifer;
@@ -69,21 +83,36 @@ public class PlayerMovement : MonoBehaviour
 
         var slide = Input.GetKey(KeyCode.C);
 
-        _animatorController.SetBool("Slide", slide);
 
         if (slide)
         {
             _characterController.height = _slideHeight;
             _characterController.center = _slideCenter;
+            // Debug.Log(_characterController.velocity.normalized);
+
+            if (_oldPosition.y - transform.position.y < -.001f)
+            {
+                _additionalSpeed += .01f;
+            }
+            else
+            {
+                _additionalSpeed -= .1f;
+            }
+
+            Debug.Log(_additionalSpeed);
         }
         else
         {
+            _additionalSpeed += BaseAcceleration;
+            if (_speed * 2 < MaxSpeed)
+                _additionalSpeed += BaseAcceleration;
+
+
             _characterController.height = _baseHeight;
             _characterController.center = _baseCenter;
         }
 
-        _animatorController.SetBool("Slide", Input.GetKey(KeyCode.C));
-
+        _animatorController.SetBool("Slide", slide);
         _animatorController.SetFloat("speed", moveDirection.normalized.magnitude);
 
         // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
