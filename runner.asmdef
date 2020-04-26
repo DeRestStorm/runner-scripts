@@ -2,7 +2,8 @@
     "name": "runner",
     "references": [
         "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
-        "GUID:b560592e6bb0ea147aacba85d20031f0"
+        "GUID:b560592e6bb0ea147aacba85d20031f0",
+        "GUID:01d6dd73a875fc945804f86daee78cfb"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

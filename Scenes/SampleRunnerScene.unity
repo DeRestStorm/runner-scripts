@@ -925,6 +925,30 @@ MonoBehaviour:
   Gravity: 20
   Modifer: 1
   VerticalSpeed: 1
+  AcelecarionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.006248474
+      value: 0
+      inSlope: 0.02299662
+      outSlope: 0.02299662
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.07020511
+    - serializedVersion: 3
+      time: 0.5931763
+      value: 0.00520128
+      inSlope: -0.000021512724
+      outSlope: -0.000021512724
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07869783
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   RotarionSpeed: 6.98
 --- !u!143 &452183533
 CharacterController:

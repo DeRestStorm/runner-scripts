@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.UIElements;
+using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(CharacterController))]
@@ -26,8 +27,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _baseCenter;
     private float _slideHeight;
     private Vector3 _oldPosition;
-
     private Vector3 _slideCenter;
+    public AnimationCurve AcelecarionCurve;
+    public CurveField Acelecari1onCurve;
+    
     // private bool _isGrounded;
 
     [Inject(Id = "CharacterAnimator")] private Animator _animatorController;
@@ -50,8 +53,9 @@ public class PlayerMovement : MonoBehaviour
         if (_speed > MaxSpeed)
         {
             _speed = MaxSpeed;
+            _additionalSpeed = MaxSpeed - _speed;
         }
-
+    
         if (_speed < 3)
         {
             _speed = 3;
@@ -99,13 +103,19 @@ public class PlayerMovement : MonoBehaviour
                 _additionalSpeed -= .1f;
             }
 
-            Debug.Log(_additionalSpeed);
         }
         else
         {
             _additionalSpeed += BaseAcceleration;
-            if (_speed * 2 < MaxSpeed)
-                _additionalSpeed += BaseAcceleration;
+            // if (_speed * 2 < MaxSpeed)
+            // {
+                
+                Debug.Log(_additionalSpeed);
+                Debug.Log(AcelecarionCurve.Evaluate(_additionalSpeed));
+                
+                _additionalSpeed += AcelecarionCurve.Evaluate(_additionalSpeed);
+
+            // }
 
 
             _characterController.height = _baseHeight;
