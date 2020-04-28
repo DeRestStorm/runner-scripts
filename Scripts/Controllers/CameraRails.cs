@@ -28,24 +28,25 @@ namespace Controllers
             var spline = Path.Peek();
             if (spline == null) return;
 
-            if (Input.GetKey(KeyCode.S))
-            {
-                _walker.NormalizedT = 0;
-                _walker.spline = spline;
-                _walker.lookAt = LookAtMode.Forward;
-                _walker.travelMode = TravelMode.Once;
-                _walker.enabled = true;
-                Lock = true;
-
-                _onPathCompleted = delegate
-                {
-                    _walker.enabled = false;
-                    Path.Pop();
-                    _walker.onPathCompleted.RemoveListener(_onPathCompleted);
-                };
-
-                _walker.onPathCompleted.AddListener(_onPathCompleted);
-            }
+            // if (Input.GetKey(KeyCode.S))
+            // {
+            //     _walker.NormalizedT = 0;
+            //     _walker.spline = spline;
+            //     _walker.lookAt = LookAtMode.Forward;
+            //     _walker.travelMode = TravelMode.Once;
+            //     _walker.enabled = true;
+            //     Lock = true;
+            //
+            //     _onPathCompleted = delegate
+            //     {
+            //         _walker.enabled = false;
+            //         Lock = false;
+            //         Path.Pop();
+            //         _walker.onPathCompleted.RemoveListener(_onPathCompleted);
+            //     };
+            //
+            //     _walker.onPathCompleted.AddListener(_onPathCompleted);
+            // }
         }
     }
 }

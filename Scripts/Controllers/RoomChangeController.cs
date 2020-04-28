@@ -7,7 +7,7 @@ namespace Controllers
 {
     public class RoomChangeController : MonoBehaviour
     {
-        public BezierSpline ReturnTrip;
+        // public BezierSpline ReturnTrip;
         [Inject] private BezierWalkerWithTime _walkerWithTime;
         [Inject] private CameraRails _rails;
         private BezierSpline _spline;
@@ -20,15 +20,19 @@ namespace Controllers
 
         private void OnMouseDown()
         {
+            if (_rails.Lock)
+                return;
+
             _walkerWithTime.spline = _spline;
             _walkerWithTime.travelMode = TravelMode.Once;
             _walkerWithTime.NormalizedT = 0;
             _walkerWithTime.enabled = true;
             _rails.Lock = true;
+            
             _onPathCompleted = delegate
             {
                 _walkerWithTime.enabled = false;
-                _rails.Path.Push(ReturnTrip);
+                // _rails.Path.Push(ReturnTrip);
                 _walkerWithTime.onPathCompleted.RemoveListener(_onPathCompleted);
                 _rails.Lock = false;
             };
