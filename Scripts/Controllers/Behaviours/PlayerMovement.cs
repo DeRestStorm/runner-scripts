@@ -1,5 +1,4 @@
-﻿using UnityEditor.UIElements;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(CharacterController))]
@@ -11,11 +10,11 @@ public class PlayerMovement : MonoBehaviour
     [Range(0, 2)] public float HorisontalSpeedModifer = 1;
     [Range(0, 2)] public float HorisontalSpeedInJumpModifer = 1;
     public float MaxSpeed;
-    public float BaseAcceleration;
     public float JumpSpeed;
     public float Gravity = 20.0f;
-    private float _speed;
+    [SerializeField] private float _speed;
     private float _additionalSpeed;
+    [SerializeField] private float _speedRatio;
     private float _acceleration;
     private Vector3 moveDirection = Vector3.zero;
     public float Modifer = 1;
@@ -29,8 +28,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _oldPosition;
     private Vector3 _slideCenter;
     public AnimationCurve AcelecarionCurve;
-    public CurveField Acelecari1onCurve;
-    
+    private float _speedGap;
+
     // private bool _isGrounded;
 
     [Inject(Id = "CharacterAnimator")] private Animator _animatorController;
@@ -45,22 +44,19 @@ public class PlayerMovement : MonoBehaviour
         _slideHeight = _baseHeight / 3;
         _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight / 2), _baseCenter.z);
         _oldPosition = transform.position;
+        _speedGap = MaxSpeed - StartSpeed;
     }
 
     void FixedUpdate()
     {
-        _speed = StartSpeed + _additionalSpeed;
-        if (_speed > MaxSpeed)
-        {
-            _speed = MaxSpeed;
-            _additionalSpeed = MaxSpeed - _speed;
-        }
-    
-        if (_speed < 3)
-        {
-            _speed = 3;
-        }
+        if (_additionalSpeed > _speedGap)
+            _additionalSpeed = _speedGap;
 
+        // if (_additionalSpeed <= -StartSpeed)
+        //     _additionalSpeed = .01f;
+        
+        _speed = StartSpeed + _additionalSpeed;
+        
         var isGrounded = _characterController.isGrounded;
         _animatorController.SetBool("ifGround", !isGrounded);
         _tempModifer = Modifer;
@@ -87,7 +83,8 @@ public class PlayerMovement : MonoBehaviour
 
         var slide = Input.GetKey(KeyCode.C);
 
-
+        _speedRatio = _additionalSpeed / _speedGap;
+        
         if (slide)
         {
             _characterController.height = _slideHeight;
@@ -100,20 +97,23 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                _additionalSpeed -= .1f;
+                if (_speed - .3f > 0) 
+                    _additionalSpeed -= .1f;
+                //     _additionalSpeed = .01f;
             }
-
+            
         }
         else
         {
-            _additionalSpeed += BaseAcceleration;
+            // _additionalSpeed += BaseAcceleration;
             // if (_speed * 2 < MaxSpeed)
             // {
-                
-                Debug.Log(_additionalSpeed);
-                Debug.Log(AcelecarionCurve.Evaluate(_additionalSpeed));
-                
-                _additionalSpeed += AcelecarionCurve.Evaluate(_additionalSpeed);
+            _speedRatio = _additionalSpeed / _speedGap;
+
+            Debug.Log(AcelecarionCurve.Evaluate(_speedRatio));
+
+            
+            _additionalSpeed += AcelecarionCurve.Evaluate(_speedRatio);
 
             // }
 
