@@ -1,3 +1,4 @@
+using Installers;
 using Scripts.Interfaces;
 using Scripts.Models;
 using UnityEngine.SceneManagement;
@@ -8,11 +9,12 @@ namespace Runtime.Scripts.Commands
     public class StartRunnerSceneCommand
     {
         [Inject] private ZenjectSceneLoader _sceneLoader;
+        [Inject] private IItemRepository<Item> _itemRepository;
 
         public void Exequte()
         {
             _sceneLoader.LoadScene(1, LoadSceneMode.Single,
-                (container) => { container.BindInstance("default_level").WhenInjectedInto<IItemRepository<Item>>(); });
+                (container) => { container.BindInstance(_itemRepository).WhenInjectedInto<GameInstaller>(); });
         }
     }
 }

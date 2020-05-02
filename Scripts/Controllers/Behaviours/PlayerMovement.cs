@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using Scripts.Enums;
+using Scripts.Interfaces;
+using Scripts.Models;
+using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(CharacterController))]
@@ -29,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _slideCenter;
     public AnimationCurve AcelecarionCurve;
     private float _speedGap;
+    public float Boost = 1;
+    private bool _boostFlag;
+    public float BoostCost = 0.01f;
+    [Inject] private IItemRepository<Item> _itemRepository;
 
     // private bool _isGrounded;
 
@@ -54,9 +62,9 @@ public class PlayerMovement : MonoBehaviour
 
         // if (_additionalSpeed <= -StartSpeed)
         //     _additionalSpeed = .01f;
-        
+
         _speed = StartSpeed + _additionalSpeed;
-        
+
         var isGrounded = _characterController.isGrounded;
         _animatorController.SetBool("ifGround", !isGrounded);
         _tempModifer = Modifer;
@@ -84,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         var slide = Input.GetKey(KeyCode.C);
 
         _speedRatio = _additionalSpeed / _speedGap;
-        
+
         if (slide)
         {
             _characterController.height = _slideHeight;
@@ -97,11 +105,10 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if (_speed - .3f > 0) 
+                if (_speed - .3f > 0)
                     _additionalSpeed -= .1f;
                 //     _additionalSpeed = .01f;
             }
-            
         }
         else
         {
@@ -110,9 +117,6 @@ public class PlayerMovement : MonoBehaviour
             // {
             _speedRatio = _additionalSpeed / _speedGap;
 
-            Debug.Log(AcelecarionCurve.Evaluate(_speedRatio));
-
-            
             _additionalSpeed += AcelecarionCurve.Evaluate(_speedRatio);
 
             // }
@@ -121,6 +125,9 @@ public class PlayerMovement : MonoBehaviour
             _characterController.height = _baseHeight;
             _characterController.center = _baseCenter;
         }
+
+        BoostMethod();
+
 
         _animatorController.SetBool("Slide", slide);
         _animatorController.SetFloat("speed", moveDirection.normalized.magnitude);
@@ -134,5 +141,41 @@ public class PlayerMovement : MonoBehaviour
 
         // Move the controller
         _characterController.Move(move * Time.deltaTime);
+    }
+
+    private void BoostMethod()
+    {
+        if (_boostFlag)
+        {
+            var batteryCount = _itemRepository.Get(ItemType.Battery).Count;
+
+            if (batteryCount > 0)
+            {
+                var balance = batteryCount - BoostCost;
+                if (balance < 0)
+                    balance = 0;
+                _itemRepository.Add(new Item() {Type = ItemType.Battery, Count = -(batteryCount - balance)});
+            }
+            else
+            {
+                _boostFlag = false;
+                Modifer -= Boost;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _boostFlag = true;
+            Modifer += Boost;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift) && _boostFlag)
+        {
+            Modifer -= Boost;
+            _boostFlag = false;
+        }
     }
 }

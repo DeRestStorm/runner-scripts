@@ -13,11 +13,16 @@ namespace Installers
 {
     public class GameInstaller : MonoInstaller
     {
+        
+        [InjectOptional]
+        private IItemRepository<Item> _itemRepository = new ItemRepository();
         public override void InstallBindings()
         {
             Container.Bind<MenuState>().AsSingle().NonLazy();
             Container.Bind<LoadStateCommand<MenuState>>().AsSingle();
-            Container.Bind<IItemRepository<Item>>().To<ItemRepository>().AsSingle();
+            Container.BindInstance(_itemRepository);
+            Container.BindInterfacesTo<IItemRepository<Item>>().AsSingle();
+            // Container.Bind<IItemRepository<Item>>().To<ItemRepository>().AsSingle();
             Container.Bind<StartRunnerSceneCommand>().AsSingle();
 
             Container.BindSignal<HardwareBackPressSignal>()
@@ -27,6 +32,7 @@ namespace Installers
 
             var pauseController = Container.Resolve<PauseController>();
             pauseController.Reset();
+            
         }
     }
 }
