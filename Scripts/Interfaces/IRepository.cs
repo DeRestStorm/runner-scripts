@@ -15,6 +15,8 @@ namespace Scripts.Interfaces
         T Get(ItemType model);
         void Add(T model);
         void Remove(T model);
+        void Load();
+        void Save();
         IEnumerable<T> GetAll();
     }
 }

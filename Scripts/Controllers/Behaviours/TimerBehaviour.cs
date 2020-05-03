@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Commands;
 using Runtime.Scripts.Commands;
+using Scripts.Interfaces;
+using Scripts.Models;
 using Signals;
 using UnityEngine;
 using Zenject;
@@ -14,7 +16,8 @@ namespace Scripts.Controllers.Behaviours
         [Inject] private SignalBus _signalBus;
         private bool _paused;
         [Inject] private StartRunnerSceneCommand _startRunnerSceneCommand;
-
+        [Inject] private IItemRepository<Item> _itemRepository;
+        
         [Inject]
         public void Construct(int value)
         {
@@ -41,6 +44,7 @@ namespace Scripts.Controllers.Behaviours
                 
                 if (_time > 0) continue;
 
+                _itemRepository.Save();
                 _startRunnerSceneCommand.Exequte();
                 yield break;
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Enums;
@@ -13,14 +14,31 @@ namespace Scripts.Repositories
     {
         private readonly List<Item> _items = new List<Item>()
         {
-            new Item(){Type = ItemType.Battery},
-            new Item(){Type = ItemType.Scrap}
+            new Item() {Type = ItemType.Battery},
+            new Item() {Type = ItemType.Scrap}
         };
+
         [Inject] private SignalBus _signalBus;
 
         public ItemRepository()
-        {   
+        {
         }
+
+
+        public void Load()
+        {
+            if (PlayerPrefs.HasKey("battery"))
+                Add(new Item() {Type = ItemType.Battery, Count = PlayerPrefs.GetFloat("battery")});
+
+            if (PlayerPrefs.HasKey("scrap"))
+                Add(new Item() {Type = ItemType.Scrap, Count = PlayerPrefs.GetFloat("scrap")});
+
+
+            Debug.Log(PlayerPrefs.GetFloat("scrap"));
+            Debug.Log(PlayerPrefs.GetFloat("battery"));
+            Debug.Log("LoadRepo");
+        }
+
 
         public Item Get(ItemType type)
         {
@@ -43,6 +61,13 @@ namespace Scripts.Repositories
         public IEnumerable<Item> GetAll()
         {
             return _items;
+        }
+
+        public void Save()
+        {
+            PlayerPrefs.SetFloat("battery", Get(ItemType.Battery).Count);
+            PlayerPrefs.SetFloat("scrap", Get(ItemType.Scrap).Count);
+            Debug.Log("SaveRepo");
         }
     }
 }

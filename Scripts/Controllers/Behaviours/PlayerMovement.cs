@@ -172,10 +172,10 @@ public class PlayerMovement : MonoBehaviour
             Modifer += Boost;
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift) && _boostFlag)
-        {
-            Modifer -= Boost;
-            _boostFlag = false;
-        }
+        // if (Input.GetKeyUp(KeyCode.LeftShift) && _boostFlag)
+        // {
+        //     Modifer -= Boost;
+        //     _boostFlag = false;
+        // }
     }
 }

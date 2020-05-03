@@ -1,4 +1,3 @@
-using System;
 using Scripts.Enums;
 using Scripts.Interfaces;
 using Scripts.Models;
@@ -20,6 +19,7 @@ namespace Components
                 return;
 
             _itemRepository.Add(new Item() {Type = Type, Count = Count});
+            gameObject.SetActive(false);
         }
     }
 }

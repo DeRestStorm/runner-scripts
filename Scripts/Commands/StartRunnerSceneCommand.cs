@@ -13,8 +13,11 @@ namespace Runtime.Scripts.Commands
 
         public void Exequte()
         {
-            _sceneLoader.LoadScene(1, LoadSceneMode.Single,
-                (container) => { container.BindInstance(_itemRepository).WhenInjectedInto<GameInstaller>(); });
+            
+            
+            SceneManager.LoadScene(1);
+            // _sceneLoader.LoadScene(1, LoadSceneMode.Single,
+            //     (container) => { container.BindInstance(_itemRepository).WhenInjectedInto<GameInstaller>(); });
         }
     }
 }
