@@ -166,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_boostFlag) 
         {
             _boostFlag = true;
             Modifer += Boost;
