@@ -1,4 +1,5 @@
-﻿using Scripts.Enums;
+﻿using System;
+using Scripts.Enums;
 using Scripts.Interfaces;
 using Scripts.Models;
 using UnityEngine;
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _boostFlag;
     public float BoostCost = 0.01f;
     [Inject] private IItemRepository<Item> _itemRepository;
+    private bool _slide;
 
     // private bool _isGrounded;
 
@@ -88,11 +90,9 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.z = _tempModifer * _speed;
         }
 
-        var slide = Input.GetKey(KeyCode.C);
-
         _speedRatio = _additionalSpeed / _speedGap;
 
-        if (slide)
+        if (_slide)
         {
             _characterController.height = _slideHeight;
             _characterController.center = _slideCenter;
@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (_oldPosition.y - transform.position.y < -.001f)
             {
-                _additionalSpeed += .01f;
+                _additionalSpeed += .015f;
             }
             else
             {
@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
         BoostMethod();
 
 
-        _animatorController.SetBool("Slide", slide);
+        _animatorController.SetBool("Slide", _slide);
         _animatorController.SetFloat("speed", moveDirection.normalized.magnitude);
 
         // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
@@ -144,37 +144,47 @@ public class PlayerMovement : MonoBehaviour
 
     private void BoostMethod()
     {
-        if (_boostFlag)
-        {
-            var batteryCount = _itemRepository.Get(ItemType.Battery).Count;
+        if (!_boostFlag) return;
+        
+        var batteryCount = _itemRepository.Get(ItemType.Battery).Count;
 
-            if (batteryCount > 0)
-            {
-                var balance = batteryCount - BoostCost;
-                if (balance < 0)
-                    balance = 0;
-                _itemRepository.Add(new Item() {Type = ItemType.Battery, Count = -(batteryCount - balance)});
-            }
-            else
-            {
-                _boostFlag = false;
-                Modifer -= Boost;
-            }
+        var balance = batteryCount - BoostCost;
+
+
+        var tempBalance = batteryCount - BoostCost;
+        var abs = tempBalance % 1;
+
+        if (abs <= BoostCost)
+        {
+            _boostFlag = false;
+            Modifer -= Boost;
+            _itemRepository.Add(new Item() {Type = ItemType.Battery, Count = -(batteryCount - (int) balance)});
+            return;
         }
+
+        _itemRepository.Add(new Item() {Type = ItemType.Battery, Count = -BoostCost});
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !_boostFlag) 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_boostFlag ) 
         {
-            _boostFlag = true;
-            Modifer += Boost;
+            if (_itemRepository.Get(ItemType.Battery).Count >= 1)
+            {
+             
+                _boostFlag = true;
+                Modifer += Boost;   
+            }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _slide = true;
         }
 
-        // if (Input.GetKeyUp(KeyCode.LeftShift) && _boostFlag)
-        // {
-        //     Modifer -= Boost;
-        //     _boostFlag = false;
-        // }
+        if (Input.GetKeyUp(KeyCode.C) || Input.GetKeyDown(KeyCode.Space)) 
+        {
+            _slide = false;
+        }
     }
 }

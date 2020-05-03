@@ -32,10 +32,7 @@ namespace Scripts.Repositories
 
             if (PlayerPrefs.HasKey("scrap"))
                 Add(new Item() {Type = ItemType.Scrap, Count = PlayerPrefs.GetFloat("scrap")});
-
-
-            Debug.Log(PlayerPrefs.GetFloat("scrap"));
-            Debug.Log(PlayerPrefs.GetFloat("battery"));
+            
             Debug.Log("LoadRepo");
         }
 
