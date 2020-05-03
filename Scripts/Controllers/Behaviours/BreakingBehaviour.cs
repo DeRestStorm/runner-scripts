@@ -12,6 +12,7 @@ namespace Samples.UI_sample.Scripts.Controllers.Behaviours
         private float _currentDurability;
         private Color _baseColor;
         public UnityEvent OnBreack;
+        public bool DestroyOnBreak = true;
 
         public List<GameObject> Shapes = new List<GameObject>();
 
@@ -21,7 +22,8 @@ namespace Samples.UI_sample.Scripts.Controllers.Behaviours
             // _renderer = GetComponent<Renderer>();
             // _baseColor = _renderer.material.color;
             Shapes.ForEach(x => x.SetActive(false));
-            Shapes[0].SetActive(true);
+            if (Shapes.Count == Durability)
+                Shapes[0].SetActive(true);
         }
 
         private void OnMouseDown()
@@ -39,18 +41,17 @@ namespace Samples.UI_sample.Scripts.Controllers.Behaviours
             if (_currentDurability <= 0)
             {
                 OnBreack.Invoke();
-                Destroy(gameObject);
+                if (DestroyOnBreak)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
             }
 
             Shapes.ForEach(x => x.SetActive(false));
-            try
-            {
+
+            if (Shapes.Count == Durability)
                 Shapes[(int) (Durability - _currentDurability)].SetActive(true);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
         }
     }
 }
