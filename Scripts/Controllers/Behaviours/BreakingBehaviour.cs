@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Samples.UI_sample.Scripts.Controllers.Behaviours
 {
@@ -10,8 +11,9 @@ namespace Samples.UI_sample.Scripts.Controllers.Behaviours
         [Range(1f, 5f)] public int Durability = 1;
         private float _currentDurability;
         private Color _baseColor;
+        public UnityEvent OnBreack;
 
-        public List<GameObject> Shapes;
+        public List<GameObject> Shapes = new List<GameObject>();
 
         private void Start()
         {
@@ -24,6 +26,11 @@ namespace Samples.UI_sample.Scripts.Controllers.Behaviours
 
         private void OnMouseDown()
         {
+            Break();
+        }
+
+        public void Break()
+        {
             _currentDurability -= 1;
             // var durabilityDifference = _currentDurability / Durability;
             // _renderer.material.color = new Color(_baseColor.r, _baseColor.g * durabilityDifference,
@@ -31,6 +38,7 @@ namespace Samples.UI_sample.Scripts.Controllers.Behaviours
 
             if (_currentDurability <= 0)
             {
+                OnBreack.Invoke();
                 Destroy(gameObject);
             }
 

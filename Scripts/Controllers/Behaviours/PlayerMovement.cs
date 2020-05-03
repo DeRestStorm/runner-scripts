@@ -1,5 +1,4 @@
-﻿using System;
-using Scripts.Enums;
+﻿using Scripts.Enums;
 using Scripts.Interfaces;
 using Scripts.Models;
 using UnityEngine;
@@ -106,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 if (_speed - .3f > 0)
-                    _additionalSpeed -= .1f;
+                    _additionalSpeed -= .085f;
                 //     _additionalSpeed = .01f;
             }
         }
