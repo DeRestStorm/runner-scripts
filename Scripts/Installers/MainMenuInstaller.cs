@@ -10,9 +10,6 @@ namespace Installers
     {
         public override void InstallBindings()
         {
-            SignalBusInstaller.Install(Container);
-            Container.DeclareSignal<HardwareBackPressSignal>();
-            Container.DeclareSignal<StartSceneSignal>();
 
             Container.Bind<MainMenuState>().AsSingle().NonLazy();
             Container.Bind<IStateMachine>().To<StateMachine>().AsSingle();

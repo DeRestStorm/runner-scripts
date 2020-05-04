@@ -9,7 +9,6 @@ namespace States
 {
     public class MainMenuState : IState
     {
-        [Inject] private StartRunnerSceneCommand _startRunnerSceneCommand;
         [Inject] private MainMenuView _mainMenuView;
 
         public void Load()
@@ -26,7 +25,7 @@ namespace States
 
         private void OnStartClicked()
         {
-            _startRunnerSceneCommand.Exequte();
+            SceneManager.LoadScene(2);
         }
     }
 }

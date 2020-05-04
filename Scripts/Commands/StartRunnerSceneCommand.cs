@@ -9,7 +9,7 @@ namespace Runtime.Scripts.Commands
     public class StartRunnerSceneCommand
     {
         [Inject] private ZenjectSceneLoader _sceneLoader;
-        [Inject] private IItemRepository<Item> _itemRepository;
+        // [Inject] private IItemRepository<Item> _itemRepository;
 
         public void Exequte()
         {
