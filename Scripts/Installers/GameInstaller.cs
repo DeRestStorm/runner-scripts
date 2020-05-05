@@ -22,16 +22,25 @@ namespace Installers
         // private IItemRepository<Item> _itemRepository = new ItemRepository();
         public override void InstallBindings()
         {
+            
+            Container.DeclareSignal<DeathSignal>();
+            
             Container.Bind<MenuState>().AsSingle().NonLazy();
+            Container.Bind<DeathState>().AsSingle().NonLazy();
             Container.Bind<LoadStateCommand<MenuState>>().AsSingle();
+            Container.Bind<LoadStateCommand<DeathState>>().AsSingle();
             // Container.BindInstance(_itemRepository);
             // Container.BindInterfacesTo<IItemRepository<Item>>().AsSingle();
             Container.Bind<IItemRepository<Item>>().To<ItemRepository>().AsSingle().NonLazy();
             Container.Bind<StartRunnerSceneCommand>().AsSingle();
             Container.Bind<PauseView>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<DeathView>().FromComponentInHierarchy().AsSingle();
 
             Container.BindSignal<HardwareBackPressSignal>()
                 .ToMethod<LoadStateCommand<MenuState>>(x => x.Execute).FromResolve();
+            
+            Container.BindSignal<DeathSignal>()
+                .ToMethod<LoadStateCommand<DeathState>>(x => x.Execute).FromResolve();
 
             Container.BindInterfacesTo<MainView>().AsSingle();
 

@@ -17,4 +17,8 @@ namespace Signals
     {
         public float Time;
     }
+
+    public class DeathSignal
+    {
+    }
 }

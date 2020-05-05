@@ -44,7 +44,7 @@ namespace Controllers.Behaviours
 
                 var targetDir = transform.position - aiMovement.transform.position;
                 var angle = Vector3.Angle(targetDir, aiMovement.transform.forward);
-                Debug.Log(angle);
+                // Debug.Log(angle);
 
                 if (Mathf.Abs(angle) >= 90f)
                 {
