@@ -1,11 +1,13 @@
 using Commands;
 using Controllers;
-using Runtime.Scripts.Commands;
+using Controllers.Behaviours;
+using Factories;
 using Runtime.Scripts.States;
 using Scripts.Interfaces;
 using Scripts.Models;
 using Scripts.Repositories;
 using Signals;
+using UnityEngine;
 using Views;
 using Zenject;
 
@@ -13,12 +15,13 @@ namespace Installers
 {
     public class GameInstaller : MonoInstaller
     {
-        
+        public GameObject ScrapPrefab;
+        public GameObject Killer;
+
         // [InjectOptional]
         // private IItemRepository<Item> _itemRepository = new ItemRepository();
         public override void InstallBindings()
         {
-            
             Container.Bind<MenuState>().AsSingle().NonLazy();
             Container.Bind<LoadStateCommand<MenuState>>().AsSingle();
             // Container.BindInstance(_itemRepository);
@@ -32,11 +35,13 @@ namespace Installers
 
             Container.BindInterfacesTo<MainView>().AsSingle();
 
+            Container.BindFactory<Vector3, ScrapBehaviour, ScrapFactory>().FromNewComponentOnNewPrefab(ScrapPrefab);
+
+
             var pauseController = Container.Resolve<PauseController>();
             pauseController.Reset();
             var itemRepository = Container.Resolve<IItemRepository<Item>>();
             itemRepository.Load();
-            
         }
     }
 }

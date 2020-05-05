@@ -1,4 +1,5 @@
 ﻿using System;
+using Factories;
 using Scripts.Enums;
 using Scripts.Interfaces;
 using Scripts.Models;
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     [Inject] private IItemRepository<Item> _itemRepository;
     private bool _slide;
 
+    [Inject] private ScrapFactory _scrapFactory;
     // private bool _isGrounded;
 
     [Inject(Id = "CharacterAnimator")] private Animator _animatorController;
@@ -145,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
     private void BoostMethod()
     {
         if (!_boostFlag) return;
-        
+
         var batteryCount = _itemRepository.Get(ItemType.Battery).Count;
 
         var balance = batteryCount - BoostCost;
@@ -167,24 +169,33 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !_boostFlag ) 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_boostFlag)
         {
             if (_itemRepository.Get(ItemType.Battery).Count >= 1)
             {
-             
                 _boostFlag = true;
-                Modifer += Boost;   
+                Modifer += Boost;
             }
         }
-        
+
         if (Input.GetKeyDown(KeyCode.C))
         {
             _slide = true;
         }
 
-        if (Input.GetKeyUp(KeyCode.C) || Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyUp(KeyCode.C) || Input.GetKeyDown(KeyCode.Space))
         {
             _slide = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (_itemRepository.Get(ItemType.Scrap).Count > 1)
+            {
+                _itemRepository.Add(new Item(ItemType.Scrap, 1));
+
+                _scrapFactory.Create(transform.position);
+            }
         }
     }
 }

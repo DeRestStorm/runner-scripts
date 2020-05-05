@@ -6,5 +6,12 @@ namespace Scripts.Models
     {
         public ItemType Type;
         public float Count;
+
+        public Item(){}
+        public Item(ItemType type, int count)
+        {
+            Type = type;
+            Count = count;
+        }
     }
 }

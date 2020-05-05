@@ -1,10 +1,7 @@
-using Installers;
-using Scripts.Interfaces;
-using Scripts.Models;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-namespace Runtime.Scripts.Commands
+namespace Commands
 {
     public class StartRunnerSceneCommand
     {
