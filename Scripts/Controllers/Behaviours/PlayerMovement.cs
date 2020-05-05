@@ -190,9 +190,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (_itemRepository.Get(ItemType.Scrap).Count > 1)
+            if (_itemRepository.Get(ItemType.Scrap).Count > 0)
             {
-                _itemRepository.Add(new Item(ItemType.Scrap, 1));
+                _itemRepository.Add(new Item(ItemType.Scrap, -1));
 
                 _scrapFactory.Create(transform.position);
             }
