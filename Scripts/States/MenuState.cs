@@ -40,8 +40,8 @@ namespace Runtime.Scripts.States
         private void OnSettingsClicked()
         {
             _signalBus.Fire<HardwareBackPressSignal>();
-            Debug.Log("Нажали настройки");
-             _startRunnerSceneCommand.Exequte();
+            // Debug.Log("Нажали настройки");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         
         private void OnHomeClicked()

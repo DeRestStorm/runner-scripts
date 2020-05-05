@@ -14,7 +14,7 @@ namespace Runtime.Scripts.States
         [Inject] private DeathView _pauseView;
         [Inject] private SignalBus _signalBus;
         [Inject] private PauseController _pauseController;
-        
+
         [Inject] private StartRunnerSceneCommand _startRunnerSceneCommand;
 
         public override void Load()
@@ -38,9 +38,9 @@ namespace Runtime.Scripts.States
         private void OnRestartClicked()
         {
             _signalBus.Fire<HardwareBackPressSignal>();
-             _startRunnerSceneCommand.Exequte();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        
+
         private void OnHomeClicked()
         {
             _signalBus.Fire<HardwareBackPressSignal>();
