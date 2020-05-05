@@ -10,7 +10,7 @@ namespace Components
 
         private void Update()
         {
-            transform.Rotate(xAngle, yAngle, zAngle, Space.Self);
+            transform.Rotate(xAngle, yAngle, zAngle, Space.World);
         }
     }
 }
