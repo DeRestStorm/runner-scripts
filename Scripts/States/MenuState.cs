@@ -46,6 +46,7 @@ namespace Runtime.Scripts.States
         
         private void OnHomeClicked()
         {
+            _signalBus.Fire<HardwareBackPressSignal>();
             SceneManager.LoadScene(0);
         }
 

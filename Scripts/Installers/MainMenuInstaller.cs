@@ -1,4 +1,5 @@
 using Commands;
+using Controllers;
 using Signals;
 using States;
 using Zenject;
@@ -14,10 +15,14 @@ namespace Installers
             Container.Bind<IStateMachine>().To<StateMachine>().AsSingle();
             Container.Bind<LoadStateCommand<MainMenuState>>().AsSingle();
             Container.Bind<StartRunnerSceneCommand>().AsSingle();
-            
 
             Container.BindSignal<StartSceneSignal>()
                 .ToMethod<LoadStateCommand<MainMenuState>>(x => x.Execute).FromResolve();
+            
+            
+            var pauseController = Container.Resolve<PauseController>();
+            pauseController.Reset();
+            
         }
     }
 }

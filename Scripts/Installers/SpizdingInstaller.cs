@@ -34,6 +34,10 @@ namespace Scripts.Installers
 
             Container.Bind<TimerBehaviour>().FromNewComponentOnNewGameObject().WithGameObjectName("Timer")
                 .AsSingle().WithArguments(Time).NonLazy();
+            
+            
+            var pauseController = Container.Resolve<PauseController>();
+            pauseController.Reset();
         }
     }
 }

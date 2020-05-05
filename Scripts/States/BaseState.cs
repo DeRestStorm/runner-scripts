@@ -1,3 +1,4 @@
+using System.Resources;
 using Signals;
 using UnityEngine;
 using Zenject;
@@ -17,8 +18,9 @@ namespace States
         public virtual void Unload()
         {
             _signalBus.Unsubscribe<HardwareBackPressSignal>(OnHardwareBackPress);
+            OnHardwareBackPress();
         }
-
+        
         protected virtual void OnHardwareBackPress()
         {
             if (_stateMachine.LastState != this)
