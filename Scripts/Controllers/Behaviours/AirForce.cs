@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Controllers.Behaviours
 {
-    public class Air : MonoBehaviour
+    public class AirForce : MonoBehaviour
     {
         public float Force;
 
