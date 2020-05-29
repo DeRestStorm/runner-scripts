@@ -2943,6 +2943,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Durability: 4
+  OnBreack:
+    m_PersistentCalls:
+      m_Calls: []
+  DestroyOnBreak: 1
   Shapes:
   - {fileID: 1005408429}
   - {fileID: 463734079}
