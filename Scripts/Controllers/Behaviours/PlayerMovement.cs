@@ -6,7 +6,7 @@ using Scripts.Models;
 using UnityEngine;
 using Zenject;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class PlayerMovement : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -40,25 +40,38 @@ public class PlayerMovement : MonoBehaviour
     [Inject] private IItemRepository<Item> _itemRepository;
     private bool _slide;
 
+    public float DashDistance;
+
+    public float JumpHeight;
+
     [Inject] private ScrapFactory _scrapFactory;
     // private bool _isGrounded;
 
     [Inject(Id = "CharacterAnimator")] private Animator _animatorController;
     [Range(1, 15)] public float RotarionSpeed = 1;
+    private Rigidbody _body;
+    private Transform _groundChecker;
+    private bool _isGrounded;
+    private Vector3 _inputs;
+    public LayerMask Ground;
+    public float GroundDistance;
 
     void Start()
     {
-        _characterController = GetComponent<CharacterController>();
+        // _characterController = GetComponent<CharacterController>();
         _speed = StartSpeed;
-        _baseCenter = _characterController.center;
-        _baseHeight = _characterController.height;
-        _slideHeight = _baseHeight / 3;
-        _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight / 2), _baseCenter.z);
+        // _baseCenter = _characterController.center;
+        // _baseHeight = _characterController.height;
+        // _slideHeight = _baseHeight / 3;
+        // _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight / 2), _baseCenter.z);
         _oldPosition = transform.position;
         _speedGap = MaxSpeed - StartSpeed;
+
+        _body = GetComponent<Rigidbody>();
+        _groundChecker = transform.GetChild(0);
     }
 
-    void FixedUpdate()
+    void FixedUpdateOld()
     {
         if (_additionalSpeed > _speedGap)
             _additionalSpeed = _speedGap;
@@ -136,13 +149,14 @@ public class PlayerMovement : MonoBehaviour
         // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
         // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
         // as an acceleration (ms^-2)
-        moveDirection.y -= Gravity * Time.deltaTime;
+        // moveDirection.y -= Gravity * Time.deltaTime;
 
         var move = transform.TransformDirection(moveDirection);
 
         // Move the controller
         _characterController.Move(move * Time.deltaTime);
     }
+
 
     private void BoostMethod()
     {
@@ -167,7 +181,43 @@ public class PlayerMovement : MonoBehaviour
         _itemRepository.Add(new Item() {Type = ItemType.Battery, Count = -BoostCost});
     }
 
-    private void Update()
+
+    void Update()
+    {
+        _isGrounded = Physics.CheckSphere(_groundChecker.position, GroundDistance, Ground,
+            QueryTriggerInteraction.Ignore);
+
+
+        _inputs = Vector3.forward;
+        // _inputs.x = Input.GetAxis("Horizontal");
+        _inputs.x = Input.GetAxis("Vertical") * -1 * HorisontalSpeedModifer;
+        // _inputs = _inputs * transform.forward;
+        // if (_inputs != Vector3.zero)
+        //     transform.forward = _inputs;
+
+        _inputs = transform.TransformVector(_inputs);
+        
+        if (Input.GetButtonDown("Jump") && _isGrounded)
+        {
+            _body.AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Vector3 dashVelocity = Vector3.Scale(transform.forward,
+                DashDistance * new Vector3((Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime), 0,
+                    (Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime)));
+            _body.AddForce(dashVelocity, ForceMode.VelocityChange);
+        }
+    }
+
+
+    void FixedUpdate()
+    {
+        _body.MovePosition(_body.position + _inputs * (_speed * Time.fixedDeltaTime));
+    }
+
+    private void UpdateOld()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && !_boostFlag)
         {
