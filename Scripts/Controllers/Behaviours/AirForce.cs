@@ -12,6 +12,7 @@ namespace Controllers.Behaviours
             var rb = other.GetComponent<Rigidbody>();
             if (rb == null)
                 return;
+            
             rb.AddForce(transform.forward * Force);
         }
         
