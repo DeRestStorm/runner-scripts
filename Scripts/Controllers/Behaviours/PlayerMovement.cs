@@ -218,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator DashCorutine()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.3f);
 
         _body.drag = 0;
     }
