@@ -201,7 +201,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && _isGrounded)
         {
-            _body.AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+            _body.AddForce(Vector3.up * JumpHeight, ForceMode.Impulse);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -212,6 +212,7 @@ public class PlayerMovement : MonoBehaviour
                 DashDistance * new Vector3((Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime), 0,
                     (Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime)));
             _body.AddForce(dashVelocity, ForceMode.VelocityChange);
+            StartCoroutine(nameof(DashCorutine));
         }
     }
 
