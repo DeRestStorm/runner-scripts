@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 {
     // Start is called before the first frame update
     private CharacterController _characterController;
+    private CapsuleCollider _collider;
     public float StartSpeed;
     [Range(0, 2)] public float HorisontalSpeedModifer = 1;
     [Range(0, 2)] public float HorisontalSpeedInJumpModifer = 1;
@@ -61,11 +62,12 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         // _characterController = GetComponent<CharacterController>();
+        _collider = GetComponent<CapsuleCollider>();
         _speed = StartSpeed;
-        // _baseCenter = _characterController.center;
-        // _baseHeight = _characterController.height;
-        // _slideHeight = _baseHeight / 3;
-        // _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight / 2), _baseCenter.z);
+        _baseCenter = _collider.center;
+        _baseHeight = _collider.height;
+        _slideHeight = _baseHeight / 3;
+        _slideCenter = new Vector3(_baseCenter.x, _baseCenter.y - (_slideHeight / 2), _baseCenter.z);
         _oldPosition = transform.position;
         _speedGap = MaxSpeed - StartSpeed;
 
@@ -213,6 +215,23 @@ public class PlayerMovement : MonoBehaviour
                     (Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime)));
             _body.AddForce(dashVelocity, ForceMode.VelocityChange);
             StartCoroutine(nameof(DashCorutine));
+        }
+        
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _slide = true;
+            _collider.height = _slideHeight;
+            _collider.center = _slideCenter;
+            _animatorController.SetBool("Slide", _slide);
+        }
+
+        if (Input.GetKeyUp(KeyCode.C) || Input.GetKeyDown(KeyCode.Space))
+        {
+            _slide = false;
+            
+            _collider.height = _baseHeight;
+            _collider.center = _baseCenter;
+            _animatorController.SetBool("Slide", _slide);
         }
     }
 
