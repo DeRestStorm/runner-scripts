@@ -3,13 +3,14 @@ using UnityEngine.AI;
 
 namespace Controllers
 {
+    [RequireComponent(typeof(NavMeshAgent))]
     public class MoveToClickPoint : MonoBehaviour
     {
-        NavMeshAgent agent;
+        private NavMeshAgent _agent;
 
         void Start()
         {
-            agent = GetComponent<NavMeshAgent>();
+            _agent = GetComponent<NavMeshAgent>();
         }
 
         void Update()
@@ -20,7 +21,7 @@ namespace Controllers
 
                 if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
                 {
-                    agent.destination = hit.point;
+                    _agent.destination = hit.point;
                 }
             }
         }
